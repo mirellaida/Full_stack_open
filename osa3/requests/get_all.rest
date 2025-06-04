@@ -1,3 +1,14 @@
 GET http://localhost:3003/api/persons
 ###
-DELETE http://localhost:3003/api/persons/3
+DELETE http://localhost:3003/api/persons/683f42891352abdd5d2a3263
+
+###
+PUT http://localhost:3003/api/persons/683dcdfdb67d740d7dcae2ab
+Content-Type: application/json
+
+{
+    "number": "99999999"
+}
+###
+// testataan infosivun toimintaa
+GET http://localhost:3003/info

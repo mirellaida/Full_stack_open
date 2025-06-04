@@ -4,11 +4,14 @@ import nameService from './services/names'
 import "./index.css"
 
 
-const Notification = ({message}) => {
+const Notification = ({ message, isError }) => {
   if (!message) return null
-  return <div className="message">{message}</div>
+  return (
+    <div className={isError ? 'error' : 'message'}>
+      {message}
+    </div>
+  )
 }
-
 
 const App = (props) => {
   const [persons, setPersons] = useState([]) 
@@ -17,6 +20,7 @@ const App = (props) => {
   const [filterPerson, setFilterPerson] = useState('')
   const [filteredPerson,setFilteredPerson] = useState([])
   const [message, setMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(()=> {
     console.log('effect')
@@ -66,6 +70,12 @@ if(existingName) {
       setMessage("")
     },4000)
     })
+    .catch((error) => {
+      setErrorMessage(error.response.data.error)
+      setTimeout(() => {
+        setErrorMessage('')
+      },4000)
+    })
   }
 }
 
@@ -111,7 +121,7 @@ const Names = ({person, deleteName}) => {
   return (
     <div>
         <h2>Phonebook</h2>
-        <Notification message = {message}/>
+        <Notification message={errorMessage || message} isError={!!errorMessage} />
         <div>
           filter shown with <input value={filterPerson} onChange={handleFilterPerson}/>
         </div>
