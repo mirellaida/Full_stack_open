@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react'
-//import axios from 'axios'
+
 import nameService from './services/names'
 import "./index.css"
 
+const App = () => {
+  const [persons, setPersons] = useState([]) 
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [filterPerson, setFilterPerson] = useState('')
+  const [filteredPerson,setFilteredPerson] = useState([])
+  const [message, setMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
 const Notification = ({ message, isError }) => {
   if (!message) return null
@@ -13,19 +21,9 @@ const Notification = ({ message, isError }) => {
   )
 }
 
-const App = (props) => {
-  const [persons, setPersons] = useState([]) 
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
-  const [filterPerson, setFilterPerson] = useState('')
-  const [filteredPerson,setFilteredPerson] = useState([])
-  const [message, setMessage] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-
   useEffect(()=> {
     console.log('effect')
     nameService.getAll().then((initialPerson) => {
-       console.log('promise fulfilled')
        setPersons(initialPerson)
        setFilteredPerson(initialPerson)
     })
@@ -51,14 +49,22 @@ if(existingName) {
     return
   }
 
-   nameService.update(existingName.id, nameObject).then((updatedPerson) => {
-      setPersons(persons.map(p => p.id === existingName.id ? updatedPerson : p))
-      setFilteredPerson(filteredPerson.map(p => p.id === existingName.id ? updatedPerson : p))
+   nameService
+    .update(existingName.id, nameObject)
+    .then((updatedPerson) => {
+      setPersons
+      (persons.map(p => p.id === existingName.id ? updatedPerson : p))
+      setFilteredPerson
+      (filteredPerson.map(p => p.id === existingName.id ? updatedPerson : p))
       setNewName('')
       setNewNumber('')
     })
-      } else {
-    nameService.create(nameObject).then(returnedPerson => {
+     
+  } else {
+
+    nameService
+    .create(nameObject)
+    .then(returnedPerson => {
     console.log(returnedPerson)
 
     setPersons(persons.concat(returnedPerson))
@@ -71,7 +77,7 @@ if(existingName) {
     },4000)
     })
     .catch((error) => {
-      setErrorMessage(error.response.data.error)
+      setErrorMessage(`${error.response.data.error}`)
       setTimeout(() => {
         setErrorMessage('')
       },4000)
