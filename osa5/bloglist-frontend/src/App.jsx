@@ -41,7 +41,7 @@ const showNotification = (message, type = 'success') => {
     blogService.create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        showNotification(`A new blog '${returnedBlog.title}' by ${returnedBlog.author} added`, 'success')
+        showNotification(`A new blog '${returnedBlog.title}' by ${returnedBlog.author} added`)
       })
       .catch(() => {
         showNotification('Failed to add blog', 'error')
