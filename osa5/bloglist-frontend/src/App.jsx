@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/notification'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +15,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [notification, setNotification] = useState(null)
   const [notificationType, setNotificationType] = useState('success')
+  const [refreshBlog, setRefreshBlog] = useState(false)
+  const blogFormRef = useRef()
 
   useEffect(() => {
   const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -27,7 +31,7 @@ useEffect(() => {
   if (user) {
     blogService.getAll().then(blogs => setBlogs(blogs))
   }
-}, [user])
+}, [user, refreshBlog])
 
 const showNotification = (message, type = 'success') => {
   setNotification(message)
@@ -116,7 +120,9 @@ const showNotification = (message, type = 'success') => {
             <button onClick={handleLogout} data-testid="logoutBtn">logout</button>
           </p>
 
+          <Togglable buttonLabel="new blog" ref={blogFormRef}>
           <BlogForm createBlog={addBlog} />
+          </Togglable>
 
           <ul>
              {blogs
