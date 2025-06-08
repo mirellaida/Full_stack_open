@@ -15,7 +15,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [notification, setNotification] = useState(null)
   const [notificationType, setNotificationType] = useState('success')
-  const [refreshBlog, setRefreshBlog] = useState(false)
+  const [blogsUpdated, setBlogsUpdated] = useState(false)
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -31,7 +31,7 @@ useEffect(() => {
   if (user) {
     blogService.getAll().then(blogs => setBlogs(blogs))
   }
-}, [user, refreshBlog])
+}, [user, blogsUpdated])
 
 const showNotification = (message, type = 'success') => {
   setNotification(message)
@@ -54,8 +54,8 @@ const showNotification = (message, type = 'success') => {
 
   const deleteBlog = async id => {
     await blogService.remove(id)
-    setRefreshBlog(!refreshBlog)
-  }
+    setBlogsUpdated(!blogsUpdated)
+}
 
   const handleLogin = async (event) => {
     event.preventDefault()
